@@ -10,7 +10,7 @@ class EuCentralBank < Money::Bank::VariableExchange
   attr_accessor :last_updated
   attr_accessor :rates_updated_at
 
-  ECB_RATES_URL = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml'
+  ECB_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml'
   CURRENCIES = %w(USD JPY BGN CZK DKK GBP HUF ILS LTL PLN RON SEK CHF NOK HRK RUB TRY AUD BRL CAD CNY HKD IDR INR KRW MXN MYR NZD PHP SGD THB ZAR)
 
   def update_rates(cache=nil)
@@ -66,7 +66,7 @@ class EuCentralBank < Money::Bank::VariableExchange
   def update_parsed_rates(doc)
     rates = doc.xpath('gesmes:Envelope/xmlns:Cube/xmlns:Cube//xmlns:Cube')
 
-    @mutex.synchronize do 
+    @mutex.synchronize do
       rates.each do |exchange_rate|
         rate = BigDecimal(exchange_rate.attribute("rate").value)
         currency = exchange_rate.attribute("currency").value
